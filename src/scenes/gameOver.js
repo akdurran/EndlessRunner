@@ -4,7 +4,9 @@ class GameOver extends Phaser.Scene {
     }
     create() {
 
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+
+        this.sound.stopAll();
 
         let menuConfig = {
             fontFamily: 'Calibri',
@@ -18,10 +20,10 @@ class GameOver extends Phaser.Scene {
             },
             fixedWidth: 0
           }
-          this.add.text(game.config.width / 2, game.config.height / 2, 'PRESS <- to retry', menuConfig).setOrigin(0.5);
+          this.add.text(game.config.width / 2, game.config.height / 2, 'PRESS F to retry', menuConfig).setOrigin(0.5);
     }
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
            this.scene.start('playScene');
           }
     }

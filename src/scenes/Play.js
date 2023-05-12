@@ -8,8 +8,17 @@ class Play extends Phaser.Scene {
         this.load.image('road', './assets/road.png');
         this.load.image('car', './assets/car.png');
         this.load.spritesheet('frog', './assets/frog.png', { frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 1 });
+        this.load.audio('main_theme', './assets/651183__josefpres__8-bit-music-loop-002-part-02-simple-mix-02-short-loop-120-bpm.wav');
+        this.load.audio('hit', './assets/explosion.wav');
     }
     create() {
+
+        let mainThemeConfig = {
+            loop : true
+          };
+          this.sound.stopAll();
+          this.sound.play('main_theme', mainThemeConfig);
+
         this.road = this.add.tileSprite(0, 0, 460 / 2, 640, 'road').setOrigin(0, 0);
         this.frog = new Frog(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'frog').setOrigin(0.5, 0);
         this.car = new Car(this, 0, game.config.height, 'car').setOrigin(0,0);
@@ -43,6 +52,7 @@ class Play extends Phaser.Scene {
     if (this.checkCollision(this.frog, this.car)) {
         console.log('collision');
         this.frog.reset();
+        this.sound.play('hit');
         this.scene.start('gameOverScene');
       }
       
