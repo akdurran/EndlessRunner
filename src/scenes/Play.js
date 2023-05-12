@@ -14,14 +14,14 @@ class Play extends Phaser.Scene {
     create() {
 
         let mainThemeConfig = {
-            loop : true
-          };
-          this.sound.stopAll();
-          this.sound.play('main_theme', mainThemeConfig);
+            loop: true
+        };
+        this.sound.stopAll();
+        this.sound.play('main_theme', mainThemeConfig);
 
         this.road = this.add.tileSprite(0, 0, 460 / 2, 640, 'road').setOrigin(0, 0);
         this.frog = new Frog(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'frog').setOrigin(0.5, 0);
-        this.car = new Car(this, 0, game.config.height, 'car').setOrigin(0,0);
+        this.car = new Car(this, 0, game.config.height, 'car').setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -42,31 +42,57 @@ class Play extends Phaser.Scene {
             this.frog.anims.play('run');
 
         });
-    } 
+
+        let timeLabelConfig = {
+            fontFamily: 'Courier',
+            fontSize: '20px',
+            backgroundColor: 'F3B141',
+            color: 'white',
+            alin: 'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+
+
+        this.timeLabel = this.add.text(game.config.width / 2, 25,
+            'TIME: 0', timeLabelConfig);
+
+        //time counter
+        increment = 0;
+
+
+    }
     update() {
         this.road.tilePositionY -= 5;
         this.frog.update();
         this.car.update();
 
         // check collisions
-    if (this.checkCollision(this.frog, this.car)) {
-        console.log('collision');
-        this.frog.reset();
-        this.sound.play('hit');
-        this.scene.start('gameOverScene');
-      }
-      
+        if (this.checkCollision(this.frog, this.car)) {
+            console.log('collision');
+            this.frog.reset();
+            this.sound.play('hit');
+            if (increment > highScore) {
+                highScore = increment;
+            }
+            this.scene.start('gameOverScene');
+        }
+
+        this.timeLabel.text = 'TIME: ' + increment;
     }
 
     checkCollision(frog, car) {
         // simple AABB checking
         if (frog.x < car.x + car.width &&
-          frog.x + frog.width > car.x &&
-          frog.y < car.y + car.height &&
-          frog.height + frog.y > car.y) {
-          return true;
+            frog.x + frog.width > car.x &&
+            frog.y < car.y + car.height &&
+            frog.height + frog.y > car.y) {
+            return true;
         } else {
-          return false;
+            return false;
         }
-      }
+    }
 }

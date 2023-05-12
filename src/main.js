@@ -44,3 +44,9 @@ let borderPadding = borderUISize / 3;
 
 //declare high score
 let highScore = 0;
+
+let increment = 0;
+
+let gameTimer = setInterval(function () {
+  increment += 1;
+}, 1000);
